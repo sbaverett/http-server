@@ -1,11 +1,18 @@
-    var http = require('http');
-    var path = require ('path');
-    var fs = require ('fs');
-    http.createServer(function (req, res) {
+var http = require('http');
+var path = require ('path');
+var fs = require ('fs');
 
     	var filePath = path.join(__dirname, 'public', 'index.html');
     	console.log('%s %s', req.connection.remoteAddress, req.url);
     	var fileStream = fs.createReadStream(filePath);
     		fileStream.pipe(res);
 
-    }).listen(3030);
+http.createServer(function (request, response) {
+	console.log('%s %s', request.connection.remoteAddress, request.url);
+
+
+	var filePath = path.join(__dirname, 'public', request.url);
+	var fileStream = fs.createReadStream(filePath);
+	fileStream.pipe(response);
+
+}).listen(3030);
